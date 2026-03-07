@@ -48,7 +48,9 @@ export function usePdfReader() {
       isLoading.value = false;
     }
   };
-
+  const prevLine = () => {
+    if (currentLineIndex.value >= 0) currentLineIndex.value--;
+  };
   const nextLine = () => {
     if (pdfPages.value.length > 0) currentLineIndex.value++;
   };
@@ -76,6 +78,7 @@ export function usePdfReader() {
     isLoading,
     openFile,
     nextLine,
+    prevLine,
     prevPage,
     nextPage,
   };

@@ -1,17 +1,53 @@
 <template>
   <main class="app-layout">
+    <CustomTitlebar />
     <ReaderToolbar />
     <PdfPageViewer />
   </main>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue';
+import CustomTitlebar from './components/CustomTitlebar.vue';
 import ReaderToolbar from './components/ReaderToolbar.vue';
 import PdfPageViewer from './components/PdfPageViewer.vue';
-</script>
+import { usePdfReader } from './composables/usePdfReader';
 
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, sans-serif; }
-.app-layout { display: flex; flex-direction: column; height: 100vh; }
-</style>
+const { nextLine,prevLine, prevPage, nextPage } = usePdfReader();
+
+// The Keyboard Shortcut Handler
+const handleKeydown = (event: KeyboardEvent) => {
+  // Ignore key presses if the user is typing in an input field
+  if (event.target instanceof HTMLInputElement) return;
+
+  switch(event.key) {
+    case ' ':
+    case 'ArrowUp':
+      event.preventDefault();
+      prevLine();
+      break;
+    case 'ArrowDown':
+      event.preventDefault();
+      nextLine();
+      break;
+    case 'ArrowLeft':
+    case 'PageDown':
+      event.preventDefault();
+      nextPage();
+      break;
+    case 'ArrowRight':
+    case 'PageUp':
+      event.preventDefault();
+      prevPage();
+      break;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+});
+</script>
