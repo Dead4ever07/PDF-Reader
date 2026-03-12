@@ -141,6 +141,7 @@ export function usePdfReader() {
         await loadDocument();
       }
     } catch (error) {
+      alert(`CRASH REPORT: ${error}`);
       console.error("Failed to open file:", error);
     }
   };
