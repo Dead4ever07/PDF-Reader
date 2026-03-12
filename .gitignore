@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+src-tauri/resources/piper/
+src-tauri/resources/model/
+*.so
+*.onnx
