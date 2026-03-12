@@ -13,7 +13,7 @@ import ReaderToolbar from './components/ReaderToolbar.vue';
 import PdfPageViewer from './components/PdfPageViewer.vue';
 import { usePdfReader } from './composables/usePdfReader';
 
-const { nextLine,prevLine, prevPage, nextPage } = usePdfReader();
+const { prevPage, nextPage } = usePdfReader();
 
 // The Keyboard Shortcut Handler
 const handleKeydown = (event: KeyboardEvent) => {
@@ -22,14 +22,6 @@ const handleKeydown = (event: KeyboardEvent) => {
 
   switch(event.key) {
     case ' ':
-    case 'ArrowUp':
-      event.preventDefault();
-      prevLine();
-      break;
-    case 'ArrowDown':
-      event.preventDefault();
-      nextLine();
-      break;
     case 'ArrowLeft':
     case 'PageDown':
       event.preventDefault();

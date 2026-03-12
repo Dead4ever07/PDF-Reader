@@ -23,10 +23,9 @@
 <script setup lang="ts">
 import { usePdfReader } from '../composables/usePdfReader';
 
-// ⬅️ Make sure isPlaying and toggleReading are imported here!
 const { 
-  pdfPages, currentLineIndex, currentPageIndex, isPlaying, selectedVoice,
-  toggleReading, nextLine, prevPage, nextPage 
+  pdfPages, currentPageIndex, isPlaying, selectedVoice,
+  toggleReading, prevPage, nextPage 
 } = usePdfReader();
 </script>
 

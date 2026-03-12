@@ -1,26 +1,15 @@
 <template>
   <div class="viewer-container">
-    
-    <div 
-      v-if="pdfUrl && activePage" 
-      class="page-wrapper"
-      :style="{ aspectRatio: `${activePage.width} / ${activePage.height}` }"
-    >
+    <div v-if="pdfUrl && activePage" class="page-wrapper" :style="{ aspectRatio: `${activePage.width} / ${activePage.height}` }">
       
-      <VuePdfEmbed 
-        :source="pdfUrl" 
-        :page="activePage.page_number" 
-        :text-layer="false"
-        :annotation-layer="false"
-        class="pdf-render-layer"
-      />
+      <VuePdfEmbed :source="pdfUrl" :page="activePage.page_number" :text-layer="false" :annotation-layer="false" class="pdf-render-layer" />
 
       <div class="highlight-layer">
         <div
           v-for="(line, lineIndex) in activePage.elements"
           :key="lineIndex"
           class="highlight-box"
-          :class="{ 'active': lineIndex === currentLineIndex }"
+          :class="{ 'active': activeSentenceIndices.includes(lineIndex) }" 
           :style="{
             left: `${(line.x / activePage.width) * 100}%`,
             top: `${(line.y / activePage.height) * 100}%`, 
@@ -40,10 +29,19 @@ import VuePdfEmbed from 'vue-pdf-embed';
 import { usePdfReader } from '../composables/usePdfReader';
 import type { PdfPageData } from '../types/pdf';
 
-const { pdfUrl, pdfPages, currentPageIndex, currentLineIndex } = usePdfReader();
+// ⬅️ Pull in the new sentence data
+const { pdfUrl, pdfPages, currentPageIndex, currentSentenceIndex, pageSentences } = usePdfReader();
 
 const activePage = computed<PdfPageData | undefined>(() => {
   return pdfPages.value[currentPageIndex.value];
+});
+
+// 🧠 Determine which lines should glow yellow right now
+const activeSentenceIndices = computed<number[]>(() => {
+  if (currentSentenceIndex.value === -1 || !pageSentences.value[currentSentenceIndex.value]) {
+    return [];
+  }
+  return pageSentences.value[currentSentenceIndex.value].elementIndices;
 });
 </script>
 

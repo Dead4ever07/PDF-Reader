@@ -12,3 +12,8 @@ export interface PdfPageData {
   height: number;
   elements: PdfTextElement[];
 }
+
+export interface SentenceBlock {
+  text: string;
+  elementIndices: number[]; // Keeps track of which visual lines belong to this sentence
+}
